@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+  Shared libraries for Pipeline scripts via Nexus retrieval.
+</div>

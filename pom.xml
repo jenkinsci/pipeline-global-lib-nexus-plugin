@@ -10,11 +10,13 @@
     </parent>
 
     <groupId>com.roylenferink.jenkins.plugins</groupId>
-    <artifactId>jenkins-lib-nexus-plugin</artifactId>
+    <artifactId>workflow-cps-global-lib-nexus</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
     <name>Pipeline: Shared Groovy Libraries through Nexus retrieval</name>
+    <description>Used for retrieving shared groovy libraries from Nexus</description>
+    <url>https://github.com/rlenferink/workflow-cps-global-lib-nexus</url>
 
     <licenses>
         <license>
@@ -37,10 +39,18 @@
     </pluginRepositories>
 
     <scm>
-        <connection>https://github.com/rlenferink/jenkins-lib-nexus-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:rlenferink/jenkins-lib-nexus-plugin.git</developerConnection>
-        <url>https://github.com/rlenferink/jenkins-lib-nexus-plugin</url>
+        <connection>scm:git:ssh://github.com/rlenferink/workflow-cps-global-lib-nexus-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/rlenferink/workflow-cps-global-lib-nexus-plugin.git</developerConnection>
+        <url>https://github.com/rlenferink/workflow-cps-global-lib-nexus-plugin</url>
     </scm>
+
+    <developers>
+        <developer>
+            <id>rlenferink</id>
+            <name>Roy Lenferink</name>
+            <email>rlenferink@apache.org</email>
+        </developer>
+    </developers>
 
     <properties>
         <jenkins.version>2.121.3</jenkins.version>

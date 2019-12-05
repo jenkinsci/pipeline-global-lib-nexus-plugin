@@ -17,7 +17,7 @@ You can follow the steps hereafter to install the plugin:
 * Clone the sources of this repository
 * Run `mvn package` in order to compile the sources and package them in a .hpi file
 * Follow the [instructions that can be found on the Jenkins website](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) and install the plugin 
-that has been packaged in `target/jenkins-lib-nexus-plugin.hpi`
+that has been packaged in `target/workflow-cps-global-lib-nexus-plugin.hpi`
 
 ### Installing from artifact
 

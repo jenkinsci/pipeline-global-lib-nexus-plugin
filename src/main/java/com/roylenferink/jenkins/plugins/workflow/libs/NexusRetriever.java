@@ -1,4 +1,4 @@
-package com.roylenferink.jenkins.plugin.nexus_lib;
+package com.roylenferink.jenkins.plugins.workflow.libs;
 
 import com.google.common.annotations.VisibleForTesting;
 import hudson.AbortException;

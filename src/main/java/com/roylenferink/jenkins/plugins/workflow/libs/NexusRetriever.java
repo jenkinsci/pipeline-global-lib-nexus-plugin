@@ -102,7 +102,12 @@ public class NexusRetriever extends LibraryRetriever {
                          @Nonnull FilePath target, @Nonnull Run<?, ?> run, @Nonnull TaskListener listener)
             throws Exception {
 
-        String artifactDetails = convertVersion(getArtifactDetails(), name, version);
+        String artifactDetails = getArtifactDetails();
+        if (artifactDetails == null || artifactDetails.isEmpty()) {
+            throw new IOException("No artifact details specified for shared library: " + name + ":" + version);
+        }
+
+        artifactDetails = convertVersion(artifactDetails, name, version);
         String libDir = getDownloadFolder(name, run).getRemote();
         listener.getLogger().println("=> Library directory for build: '" + libDir + "'");
 

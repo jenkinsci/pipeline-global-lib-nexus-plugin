@@ -17,7 +17,7 @@ You can follow the steps hereafter to install the plugin:
 * Clone the sources of this repository
 * Run `mvn package` in order to compile the sources and package them in a .hpi file
 * Follow the [instructions that can be found on the Jenkins website](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) and install the plugin 
-that has been packaged in `target/workflow-cps-global-lib-nexus.hpi`
+that has been packaged in `target/pipeline-global-lib-nexus.hpi`
 
 ### Installing from artifact
 
@@ -27,7 +27,7 @@ The plugin is referenced as an official plugin in the Jenkins update site, so yo
 
 #### To install the plugin manually
 
-You can find the archives of all the version of the Plugin on the [Update site](https://plugins.jenkins.io/workflow-cps-global-lib-nexus).
+You can find the archives of all the version of the Plugin on the [Update site](https://plugins.jenkins.io/pipeline-global-lib-nexus).
 You can also Download the wished plugin release from the GitHub releases section.
 The, go to the Jenkins Administration Plugins UI > Advanced section and upload the plugin .hpi file.
 
@@ -165,7 +165,7 @@ You're a maintainer of this repository and need to release a fix? Please follow 
 * Make sure you fulfilled the requirements that can be found [here](https://jenkins.io/doc/developer/publishing/releasing/)
 * Be sure to be connected to no VPN to have SSH connection working
 * Be sure to have no mirror defined in your global settings.xml (if needed pass --global-settings an-empty-settings.xml as an additional parameter)
-* Place yourself on the master branch of [the jenkinsci fork](https://github.com/jenkinsci/workflow-cps-global-lib-nexus-plugin)
+* Place yourself on the master branch of [the jenkinsci fork](https://github.com/jenkinsci/pipeline-global-lib-nexus-plugin)
 * ```mvn release:prepare``` and let the plugin increase the patch number (or increase yourself the minor or major)
 * ```mvn release:perform```
 * If things go wrong ```mvn release:clean```

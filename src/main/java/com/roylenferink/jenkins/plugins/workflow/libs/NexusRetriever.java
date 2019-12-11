@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -114,7 +115,7 @@ public class NexusRetriever extends LibraryRetriever {
         String mvnCommand = "mvn dependency:copy -Dartifact=" + artifactDetails + " -DoutputDirectory=" + libDir;
         Process process = Runtime.getRuntime().exec(mvnCommand);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8.name()));
         StringBuilder output = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {

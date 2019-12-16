@@ -15,7 +15,7 @@
 
     <name>Pipeline: Shared Groovy Libraries through Nexus retrieval</name>
     <description>Used for retrieving shared groovy libraries from Nexus</description>
-    <url>https://github.com/jenkinsci/pipeline-global-lib-nexus</url>
+    <url>https://github.com/jenkinsci/pipeline-global-lib-nexus-plugin</url>
 
     <licenses>
         <license>

@@ -173,4 +173,4 @@ You're a maintainer of this repository and need to release a fix? Please follow 
 
 ## License
 
-This project is licensed under the terms of the [Apache 2.0 License](LICENSE).
+This project is licensed under the terms of the [MIT License](LICENSE).

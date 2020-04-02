@@ -1,5 +1,9 @@
 # Nexus Shared Libraries Retriever plugin
 
+[![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/pipeline-global-lib-nexus.svg?color=blue)](https://plugins.jenkins.io/pipeline-global-lib-nexus)
+[![GitHub release](https://img.shields.io/github/release/jenkinsci/pipeline-global-lib-nexus-plugin.svg?label=release)](https://github.com/jenkinsci/pipeline-global-lib-nexus-plugin/releases/latest)
+[![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/pipeline-global-lib-nexus.svg?color=blue)](https://plugins.jenkins.io/pipeline-global-lib-nexus)
+
 The current official plugin [workflow-cps-global-lib](https://github.com/jenkinsci/workflow-cps-global-lib-plugin/) does provide a way to retrieve 
 shared libraries through a SCM, such as Git. The goal of this plugin is to provide another way to retrieve shared libraries via the @Library 
 declaration in a Jenkinsfile.

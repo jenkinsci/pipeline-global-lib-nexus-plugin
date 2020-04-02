@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 public class NexusRetriever extends LibraryRetriever {
 
     private final String artifactDetails;
+    private final String mavenHome;
 
     private final Node jenkins;
 
@@ -50,22 +51,28 @@ public class NexusRetriever extends LibraryRetriever {
      * @param jenkins The representation of the Jenkins server
      */
     @VisibleForTesting
-    NexusRetriever(String artifactDetails, Node jenkins) {
+    NexusRetriever(String artifactDetails, String mavenHome, Node jenkins) {
         this.jenkins = jenkins;
         this.artifactDetails = artifactDetails;
+        this.mavenHome = mavenHome;
     }
 
     /**
      * Constructor
      */
     @DataBoundConstructor
-    public NexusRetriever(@Nonnull String artifactDetails) {
+    public NexusRetriever(@Nonnull String artifactDetails, @Nonnull String mavenHome) {
         this.jenkins = Jenkins.get();
         this.artifactDetails = artifactDetails;
+        this.mavenHome = mavenHome;
     }
 
     public String getArtifactDetails() {
         return artifactDetails;
+    }
+
+    public String getMavenHome() {
+        return mavenHome;
     }
 
     /**
@@ -101,6 +108,7 @@ public class NexusRetriever extends LibraryRetriever {
     @Override
     public void retrieve(@Nonnull String name, @Nonnull String version, @Nonnull boolean changelog,
                          @Nonnull FilePath target, @Nonnull Run<?, ?> run, @Nonnull TaskListener listener)
+//            {
             throws Exception {
 
         String artifactDetails = getArtifactDetails();
@@ -112,21 +120,42 @@ public class NexusRetriever extends LibraryRetriever {
         String libDir = getDownloadFolder(name, run).getRemote();
         listener.getLogger().println("=> Library directory for build: '" + libDir + "'");
 
-        String mvnCommand = "mvn dependency:copy -Dartifact=" + artifactDetails + " -DoutputDirectory=" + libDir;
-        Process process = Runtime.getRuntime().exec(mvnCommand);
+        // initialize runtime
+        Runtime rt = Runtime.getRuntime();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8.name()));
-        StringBuilder output = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            output.append(line);
-            output.append("\n");
+        String mvnExecutable = null;
+
+        if (this.mavenHome != null) {
+            Path mavenExec = Paths.get(mavenHome, "bin", "mvn");
+            if (Files.exists(mavenExec) && Files.isExecutable(mavenExec)) {
+                mvnExecutable = mavenExec.toString();
+            } else {
+                listener.getLogger().println("=> Incorrect MAVEN_HOME specified, trying system Maven...");
+            }
         }
-        reader.close();
 
+        if (mvnExecutable == null) {
+            // check if system 'mvn' available
+            Process proc = rt.exec("which mvn");
+            int exitVal = proc.waitFor();
+            if (exitVal == 0) {
+                mvnExecutable = getProcessOutput(proc);
+            }
+        }
+
+        if (mvnExecutable == null) {
+            throw new IOException("Unable to find mvn executable, set MAVEN_HOME in the plugin configuration or add mvn to the PATH");
+        }
+
+        listener.getLogger().println("=> Using " + mvnExecutable + " for downloading library");
+
+        String mvnCommand = mvnExecutable + " dependency:copy -Dartifact=" + artifactDetails + " -DoutputDirectory=" + libDir;
+        Process process = rt.exec(mvnCommand);
+        String output = getProcessOutput(process);
         int exitVal = process.waitFor();
+
         listener.getLogger().println("=> Downloading library from Nexus");
-        listener.getLogger().print(output.toString());
+        listener.getLogger().print(output);
 
         if (exitVal == 0) {
             String artifactId = artifactDetails.split(":")[1]; // 0 = groupId, 1 = artifactId, etc...
@@ -165,6 +194,20 @@ public class NexusRetriever extends LibraryRetriever {
         } else {
             throw new Exception("Error downloading artifact (" + exitVal + ")");
         }
+    }
+
+
+    private String getProcessOutput(Process p) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8.name()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line);
+            output.append("\n");
+        }
+        reader.close();
+
+        return output.toString();
     }
 
     private String convertVersion(String input, String name, String version) {

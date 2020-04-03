@@ -1,14 +1,11 @@
 package com.roylenferink.jenkins.plugins.workflow.libs;
 
 import com.google.common.annotations.VisibleForTesting;
-import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Node;
 import hudson.model.Run;
 import hudson.model.TaskListener;
-import hudson.model.TopLevelItem;
-import hudson.slaves.WorkspaceList;
 import jenkins.model.Jenkins;
 import org.jenkinsci.Symbol;
 import org.jenkinsci.plugins.workflow.libs.LibraryRetriever;
@@ -67,14 +64,6 @@ public class NexusRetriever extends LibraryRetriever {
         this.mavenHome = mavenHome;
     }
 
-    public String getArtifactDetails() {
-        return artifactDetails;
-    }
-
-    public String getMavenHome() {
-        return mavenHome;
-    }
-
     /**
      * Retrieves the shared library code. Prefer this version of the method.
      * <p>
@@ -108,16 +97,15 @@ public class NexusRetriever extends LibraryRetriever {
     @Override
     public void retrieve(@Nonnull String name, @Nonnull String version, @Nonnull boolean changelog,
                          @Nonnull FilePath target, @Nonnull Run<?, ?> run, @Nonnull TaskListener listener)
-//            {
             throws Exception {
 
-        String artifactDetails = getArtifactDetails();
+        String artifactDetails = this.artifactDetails;
         if (artifactDetails == null || artifactDetails.isEmpty()) {
             throw new IOException("No artifact details specified for shared library: " + name + ":" + version);
         }
 
         artifactDetails = convertVersion(artifactDetails, name, version);
-        String libDir = getDownloadFolder(name, run).getRemote();
+        String libDir = target.getRemote();
         listener.getLogger().println("=> Library directory for build: '" + libDir + "'");
 
         // initialize runtime
@@ -126,7 +114,7 @@ public class NexusRetriever extends LibraryRetriever {
         String mvnExecutable = null;
 
         if (this.mavenHome != null) {
-            Path mavenExec = Paths.get(mavenHome, "bin", "mvn");
+            Path mavenExec = Paths.get(this.mavenHome, "bin", "mvn");
             if (Files.exists(mavenExec) && Files.isExecutable(mavenExec)) {
                 mvnExecutable = mavenExec.toString();
             } else {
@@ -215,25 +203,6 @@ public class NexusRetriever extends LibraryRetriever {
         Matcher match = p.matcher(input);
 
         return match.find() ? match.replaceAll(version) : input;
-    }
-
-    private FilePath getDownloadFolder(String name, Run<?, ?> run) throws IOException {
-        FilePath dir;
-        if (run.getParent() instanceof TopLevelItem) {
-            FilePath baseWorkspace = jenkins.getWorkspaceFor((TopLevelItem) run.getParent());
-            if (baseWorkspace == null) {
-                throw new IOException("Unable to determine workspace for build, " + jenkins.getDisplayName());
-            }
-            dir = baseWorkspace.withSuffix(getFilePathSuffix() + "libs").child(name);
-        } else {
-            throw new AbortException("Cannot check out in non-top-level build");
-        }
-        return dir;
-    }
-
-    // There is WorkspaceList.tempDir but no API to make other variants
-    private static String getFilePathSuffix() {
-        return System.getProperty(WorkspaceList.class.getName(), "@");
     }
 
     // ---------- DESCRIPTOR ------------ //

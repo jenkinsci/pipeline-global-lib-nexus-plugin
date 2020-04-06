@@ -64,6 +64,14 @@ public class NexusRetriever extends LibraryRetriever {
         this.mavenHome = mavenHome;
     }
 
+    public String getArtifactDetails() {
+        return artifactDetails;
+    }
+
+    public String getMavenHome() {
+        return mavenHome;
+    }
+
     /**
      * Retrieves the shared library code. Prefer this version of the method.
      * <p>
@@ -99,7 +107,7 @@ public class NexusRetriever extends LibraryRetriever {
                          @Nonnull FilePath target, @Nonnull Run<?, ?> run, @Nonnull TaskListener listener)
             throws Exception {
 
-        String artifactDetails = this.artifactDetails;
+        String artifactDetails = this.getArtifactDetails();
         if (artifactDetails == null || artifactDetails.isEmpty()) {
             throw new IOException("No artifact details specified for shared library: " + name + ":" + version);
         }
@@ -113,8 +121,8 @@ public class NexusRetriever extends LibraryRetriever {
 
         String mvnExecutable = null;
 
-        if (this.mavenHome != null) {
-            Path mavenExec = Paths.get(this.mavenHome, "bin", "mvn");
+        if (this.getMavenHome() != null) {
+            Path mavenExec = Paths.get(this.getMavenHome(), "bin", "mvn");
             if (Files.exists(mavenExec) && Files.isExecutable(mavenExec)) {
                 mvnExecutable = mavenExec.toString();
             } else {

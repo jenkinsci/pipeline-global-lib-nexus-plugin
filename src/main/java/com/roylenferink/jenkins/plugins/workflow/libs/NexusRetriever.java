@@ -23,6 +23,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -116,9 +119,6 @@ public class NexusRetriever extends LibraryRetriever {
         String libDir = target.getRemote();
         listener.getLogger().println("=> Library directory for build: '" + libDir + "'");
 
-        // initialize runtime
-        Runtime rt = Runtime.getRuntime();
-
         String mvnExecutable = null;
 
         if (this.getMavenHome() != null) {
@@ -132,7 +132,7 @@ public class NexusRetriever extends LibraryRetriever {
 
         if (mvnExecutable == null) {
             // check if system 'mvn' available
-            Process proc = rt.exec("which mvn");
+            Process proc = Runtime.getRuntime().exec("which mvn");
             int exitVal = proc.waitFor();
             if (exitVal == 0) {
                 mvnExecutable = getProcessOutput(proc);
@@ -145,8 +145,13 @@ public class NexusRetriever extends LibraryRetriever {
 
         listener.getLogger().println("=> Using " + mvnExecutable + " for downloading library");
 
-        String mvnCommand = mvnExecutable + " dependency:copy -Dartifact=" + artifactDetails + " -DoutputDirectory=" + libDir;
-        Process process = rt.exec(mvnCommand);
+        List<String> mvnCommand = Arrays.asList(mvnExecutable,
+                                               "dependency:copy",
+                                               "-Dartifact=" + artifactDetails,
+                                               "-DoutputDirectory=" + libDir);
+
+        ProcessBuilder pb = new ProcessBuilder(mvnCommand);
+        Process process = pb.start();
         String output = getProcessOutput(process);
         int exitVal = process.waitFor();
 

@@ -143,7 +143,10 @@ In Administration / Folder / Pipeline configuration views:
 * Decide if you want to load it implicitly or not
 ![Administration UI](doc/NexusRetrievalSettings.png)
 * Provide the artifact details used to retrieve the shared libraries in the following format: `<groupId>:<artifactId>:<version>:<packaging>:<optional classifier>`. 
-In the example the following shared library is used: `com.roylenferink:jenkins-shared-library:${library.jenkins-lib.version}:zip:lib`.
+  In the example the following shared library is used: `com.roylenferink:jenkins-shared-library:${library.jenkins-lib.version}:zip:lib`.
+* Provide a location to an available Maven installation. If `MAVEN_HOME` is not specified, the first-found
+  Maven installation will be used. If Maven cannot be found the job will fail.
+  In the example the following Maven location is used `/tools/apache-maven-3.6.2`.
 
 The artifact details are version-dynamic, it follows the Jenkins standard annotation `${library.<library_name>.version}` that is afterwards replaced either by the 
 default version provided by the admin, or the version specified by the user Jenkinsfile in the @Library annotation.
@@ -154,7 +157,8 @@ Users can also retrieve shared libraries from their Jenkinsfile, by defining it 
 
 ```groovy
 library identifier: 'external-shared-libraries@4.1.0', retriever: nexus(
-   artifactDetails: 'com.roylenferink:jenkins-shared-library:${library.external-shared-libraries.version}:zip:lib')
+   artifactDetails: 'com.roylenferink:jenkins-shared-library:${library.external-shared-libraries.version}:zip:lib',
+   mavenHome: '/tools/apache-maven-3.6.2')
 ```
 
 ## Contributing

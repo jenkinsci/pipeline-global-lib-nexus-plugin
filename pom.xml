@@ -53,7 +53,7 @@
     </developers>
 
     <properties>
-        <jenkins.version>2.319.3</jenkins.version>
+        <jenkins.version>2.346.3</jenkins.version>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
         <artifactory-maven-plugin.version>2.6.1</artifactory-maven-plugin.version>
         <project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
@@ -63,8 +63,8 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.319.x</artifactId>
-                <version>1654.vcb_69d035fa_20</version>
+                <artifactId>bom-2.346.x</artifactId>
+                <version>1763.v092b_8980a_f5e</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -81,7 +81,7 @@
         <dependency>
             <groupId>io.jenkins.plugins</groupId>
             <artifactId>pipeline-groovy-lib</artifactId>
-            <version>612.v84da_9c54906d</version>
+            <version>629.vb_5627b_ee2104</version>
         </dependency>
 
         <dependency>

@@ -1,6 +1,7 @@
 package com.roylenferink.jenkins.plugins.workflow.libs;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.Node;
@@ -14,7 +15,6 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -36,7 +35,7 @@ import java.util.stream.Stream;
  * in a Jenkinsfile.
  * <p>
  * The current official plugin (workflow-cps-global-lib) does provide only a way to retrieve shared libraries
- * through a SCM, such as Git, Subversion, etc.
+ * through an SCM, such as Git, Subversion, etc.
  */
 @Restricted(NoExternalUse.class)
 public class NexusRetriever extends LibraryRetriever {
@@ -61,7 +60,7 @@ public class NexusRetriever extends LibraryRetriever {
      * Constructor
      */
     @DataBoundConstructor
-    public NexusRetriever(@Nonnull String artifactDetails, @Nonnull String mavenHome) {
+    public NexusRetriever(@NonNull String artifactDetails, @NonNull String mavenHome) {
         this.jenkins = Jenkins.get();
         this.artifactDetails = artifactDetails;
         this.mavenHome = mavenHome;
@@ -88,8 +87,8 @@ public class NexusRetriever extends LibraryRetriever {
      * @throws Exception if the file cannot be downloaded, archive can't be extracted, workspace is not writable
      */
     @Override
-    public void retrieve(@Nonnull String name, @Nonnull String version, @Nonnull FilePath target,
-                         @Nonnull Run<?, ?> run, @Nonnull TaskListener listener) throws Exception {
+    public void retrieve(@NonNull String name, @NonNull String version, @NonNull FilePath target,
+                         @NonNull Run<?, ?> run, @NonNull TaskListener listener) throws Exception {
         retrieve(name, version, true, target, run, listener);
     }
 
@@ -106,8 +105,8 @@ public class NexusRetriever extends LibraryRetriever {
      * @throws Exception if the file cannot be downloaded, archive can't be extracted, workspace is not writable
      */
     @Override
-    public void retrieve(@Nonnull String name, @Nonnull String version, @Nonnull boolean changelog,
-                         @Nonnull FilePath target, @Nonnull Run<?, ?> run, @Nonnull TaskListener listener)
+    public void retrieve(@NonNull String name, @NonNull String version, @NonNull boolean changelog,
+                         @NonNull FilePath target, @NonNull Run<?, ?> run, @NonNull TaskListener listener)
             throws Exception {
 
         String artifactDetails = this.getArtifactDetails();
@@ -199,7 +198,7 @@ public class NexusRetriever extends LibraryRetriever {
 
 
     private String getProcessOutput(Process p) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8.name()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8));
         StringBuilder output = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -230,7 +229,7 @@ public class NexusRetriever extends LibraryRetriever {
     @Restricted(NoExternalUse.class)
     public static class DescriptorImpl extends LibraryRetrieverDescriptor {
         @Override
-        public @Nonnull
+        public @NonNull
         String getDisplayName() {
             return "Nexus";
         }

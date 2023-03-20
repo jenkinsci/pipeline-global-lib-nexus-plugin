@@ -105,7 +105,7 @@ public class NexusRetriever extends LibraryRetriever {
      * @throws Exception if the file cannot be downloaded, archive can't be extracted, workspace is not writable
      */
     @Override
-    public void retrieve(@NonNull String name, @NonNull String version, @NonNull boolean changelog,
+    public void retrieve(@NonNull String name, @NonNull String version, boolean changelog,
                          @NonNull FilePath target, @NonNull Run<?, ?> run, @NonNull TaskListener listener)
             throws Exception {
 

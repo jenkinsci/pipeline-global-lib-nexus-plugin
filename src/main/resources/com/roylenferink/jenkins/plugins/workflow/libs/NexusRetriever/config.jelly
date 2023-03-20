@@ -27,11 +27,11 @@ THE SOFTWARE.
 
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:c="/lib/credentials" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:t="/lib/hudson">
 
-<f:entry title="${%Artifact details}" field="artifactDetails">
-    <f:textbox/>
-</f:entry>
-<f:entry title="${%MAVEN_HOME}" field="mavenHome">
-    <f:textbox/>
-</f:entry>
+    <f:entry field="artifactDetails" title="${%Artifact details}">
+        <f:textbox/>
+    </f:entry>
+    <f:entry field="mavenHome" title="${%MAVEN_HOME}">
+        <f:textbox/>
+    </f:entry>
 
 </j:jelly>

@@ -8,6 +8,7 @@ import hudson.model.Node;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import jenkins.model.Jenkins;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
 import org.jenkinsci.plugins.workflow.libs.LibraryRetriever;
 import org.jenkinsci.plugins.workflow.libs.LibraryRetrieverDescriptor;
@@ -23,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -92,7 +93,6 @@ public class NexusRetriever extends LibraryRetriever {
         retrieve(name, version, true, target, run, listener);
     }
 
-
     /**
      * Checks first if the library is accessible via a HEAD call. Then retrieves the shared library from Nexus.
      *
@@ -144,10 +144,14 @@ public class NexusRetriever extends LibraryRetriever {
 
         listener.getLogger().println("=> Using " + mvnExecutable + " for downloading library");
 
-        List<String> mvnCommand = Arrays.asList(mvnExecutable,
-                                               "dependency:copy",
-                                               "-Dartifact=" + artifactDetails,
-                                               "-DoutputDirectory=" + libDir);
+        List<String> mvnCommand = new ArrayList<>();
+        mvnCommand.add(mvnExecutable);
+        mvnCommand.add("dependency:copy");
+        mvnCommand.add("--update-snapshots");
+        mvnCommand.add("-Dartifact=" + artifactDetails);
+        mvnCommand.add("-DoutputDirectory=" + libDir);
+
+        listener.getLogger().println("=> Executing " + StringUtils.join(mvnCommand, " "));
 
         ProcessBuilder pb = new ProcessBuilder(mvnCommand);
         Process process = pb.start();

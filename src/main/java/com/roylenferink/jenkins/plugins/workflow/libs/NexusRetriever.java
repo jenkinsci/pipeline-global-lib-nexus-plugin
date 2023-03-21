@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  * The goal of this plugin is to provide another way to retrieve shared libraries via the @Library declaration
  * in a Jenkinsfile.
  * <p>
- * The current official plugin (workflow-cps-global-lib) does provide only a way to retrieve shared libraries
+ * The current official pipeline-groovy-lib-plugin only provides a way to retrieve shared libraries
  * through an SCM, such as Git, Subversion, etc.
  */
 @Restricted(NoExternalUse.class)

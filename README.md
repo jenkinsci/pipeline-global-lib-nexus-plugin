@@ -4,43 +4,40 @@
 [![GitHub release](https://img.shields.io/github/release/jenkinsci/pipeline-global-lib-nexus-plugin.svg?label=release)](https://github.com/jenkinsci/pipeline-global-lib-nexus-plugin/releases/latest)
 [![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/pipeline-global-lib-nexus.svg?color=blue)](https://plugins.jenkins.io/pipeline-global-lib-nexus)
 
-The current official [pipeline-groovy-lib-plugin](https://github.com/jenkinsci/pipeline-groovy-lib-plugin/) does provide a way to retrieve 
-shared libraries through a SCM, such as Git. The goal of this plugin is to provide another way to retrieve shared libraries via the @Library 
-declaration in a Jenkinsfile.
-
-## Context
-
-The Nexus shared library retriever is implemented to retrieve [shared libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) from Nexus.
+The official [pipeline-groovy-lib-plugin](https://github.com/jenkinsci/pipeline-groovy-lib-plugin/) does provide a way
+to retrieve [shared libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) through a SCM, such as Git.
+The goal of this Nexus plugin is to add the ability to retrieve shared libraries from Nexus (via the @Library declaration in a Jenkinsfile).
 
 ## Installation of the plugin
 
-### Installing from source
+### Installation using a pre-built artifact
+
+**Installing from the plugins site (recommended)**
+
+The plugin is referenced as an official plugin on the Jenkins update site, so you should be able to use the integrated
+search in the Plugin section.
+
+**Install the plugin using the pre-built .hpi file**
+
+You can find the archives of all the versions of the Plugin on the [Jenkins update site](https://plugins.jenkins.io/pipeline-global-lib-nexus).
+You can also download the wished plugin release from the GitHub releases section.
+Then, go to the Jenkins Administration Plugins UI > Advanced section and upload the plugin .hpi file.
+
+### Installation from source
 
 You can follow the steps hereafter to install the plugin:
 
-* Clone the sources of this repository
-* Run `mvn package` in order to compile the sources and package them in a .hpi file
-* Follow the [instructions that can be found on the Jenkins website](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) and install the plugin 
-that has been packaged in `target/pipeline-global-lib-nexus.hpi`
-
-### Installing from artifact
-
-#### Installing from the Plugins site
-
-The plugin is referenced as an official plugin in the Jenkins update site, so you should be able to use the integrated search in the Plugin section.
-
-#### To install the plugin manually
-
-You can find the archives of all the version of the Plugin on the [Update site](https://plugins.jenkins.io/pipeline-global-lib-nexus).
-You can also Download the wished plugin release from the GitHub releases section.
-The, go to the Jenkins Administration Plugins UI > Advanced section and upload the plugin .hpi file.
+* Clone this repository
+* Run `mvn clean package` in order to compile the sources and package them in a .hpi file
+* Follow the [instructions that can be found on the Jenkins website](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) and install the plugin
+  that has been packaged in `target/pipeline-global-lib-nexus.hpi`
 
 ## How to use the plugin
 
-### Pre-requisite: package the library
+### Pre-requisite: a packaged shared library
 
 In order to be able to use this plugin, you need to package your library (probably during a Continuous Integration build) and publish it to Nexus
-so Maven can be used to download the artifact again. You should end up with a ZIP file with the following structure:
+so Maven can download the artifact again. You should end up with a ZIP file with the following structure:
 
 ```bash
 > unzip -vl pipeline-libraries.zip
@@ -116,6 +113,9 @@ The assembly.xml file:
 </assembly>
 ```
 
+A basic example project is available [here](https://github.com/rlenferink/jenkins-shared-library-example), which
+contains a scripted pipeline executing a couple of basic steps.
+
 ### Constraints
 
 *The plugin only supports ZIP shared libraries for the moment.*
@@ -161,23 +161,10 @@ library identifier: 'external-shared-libraries@4.1.0', retriever: nexus(
    mavenHome: '/tools/apache-maven-3.6.2')
 ```
 
-## Contributing
+## Contributing to this plugin
 
-You can contribute to this plugin by retrieving the source and following the [official Jenkins plugin tutorial](https://wiki.jenkins.io/display/JENKINS/Plugin+tutorial) 
-to install, run, test and package it.
-
-## Release process
-
-You're a maintainer of this repository and need to release a fix? Please follow the instructions below:
-
-* Make sure you fulfilled the requirements that can be found [here](https://jenkins.io/doc/developer/publishing/releasing/)
-* Be sure to be connected to no VPN to have SSH connection working
-* Be sure to have no mirror defined in your global settings.xml (if needed pass --global-settings an-empty-settings.xml as an additional parameter)
-* Place yourself on the master branch of [the jenkinsci fork](https://github.com/jenkinsci/pipeline-global-lib-nexus-plugin)
-* ```mvn release:prepare``` and let the plugin increase the patch number (or increase yourself the minor or major)
-* ```mvn release:perform```
-* If things go wrong ```mvn release:clean```
-* Update the [Wiki release notes](https://wiki.jenkins.io/display/JENKINS/Nexus+Shared+Libraries+Retriever+plugin)
+Contributions to this plugin are definitely welcome! Follow the steps in the [DEVELOPMENT.md](./DEVELOPMENT.md)
+to get started.
 
 ## License
 

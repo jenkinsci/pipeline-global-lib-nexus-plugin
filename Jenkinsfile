@@ -4,7 +4,7 @@
 */
 buildPlugin(
   forkCount: '1C', // Run a JVM per core in tests
-  // we use Docker for containerized tests
+  // we don't use Docker for containerized tests
   useContainerAgent: true,
   configurations: [
     [platform: 'linux', jdk: 21],

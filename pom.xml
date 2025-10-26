@@ -117,7 +117,7 @@
         <dependency>
             <groupId>io.jenkins</groupId>
             <artifactId>configuration-as-code</artifactId>
-            <version>1569.vb_72405b_80249</version>
+            <version>2006.v001a_2ca_6b_574</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -8,7 +8,6 @@ import hudson.model.Node;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
 import org.jenkinsci.plugins.workflow.libs.LibraryRetriever;
 import org.jenkinsci.plugins.workflow.libs.LibraryRetrieverDescriptor;
@@ -151,7 +150,7 @@ public class NexusRetriever extends LibraryRetriever {
         mvnCommand.add("-Dartifact=" + artifactDetails);
         mvnCommand.add("-DoutputDirectory=" + libDir);
 
-        listener.getLogger().println("=> Executing " + StringUtils.join(mvnCommand, " "));
+        listener.getLogger().println("=> Executing " + String.join(" ", mvnCommand));
 
         ProcessBuilder pb = new ProcessBuilder(mvnCommand);
         Process process = pb.start();

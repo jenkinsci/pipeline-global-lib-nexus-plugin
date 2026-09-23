@@ -155,7 +155,7 @@ public class NexusRetriever extends LibraryRetriever {
         String output = getProcessOutput(process);
         int exitVal = process.waitFor();
 
-        listener.getLogger().println("=> Downloading library from Nexus");
+        listener.getLogger().println("=> Downloading library with maven");
         listener.getLogger().print(output);
 
         if (exitVal == 0) {

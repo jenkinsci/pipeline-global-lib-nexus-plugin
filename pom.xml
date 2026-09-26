@@ -10,7 +10,7 @@
 
     <groupId>com.roylenferink.jenkins.plugins</groupId>
     <artifactId>pipeline-global-lib-nexus</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4-SNAPSHOT</version>
     <packaging>hpi</packaging>
 
     <name>Pipeline: Shared Groovy Libraries through Nexus retrieval</name>
